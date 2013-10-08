@@ -97,3 +97,7 @@ only = <%= only %>
 <% if @master %>
 master = <%= master %>
 <% end %>
+
+<% if @replset -%>
+replSet = <%= @replset %>
+<% end -%>
