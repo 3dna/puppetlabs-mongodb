@@ -97,4 +97,12 @@ class mongodb (
     enable    => true,
     subscribe => File[$config_file],
   }
+
+  anchor {
+    'mongodb::begin':
+      before => [Package['mongodb-10gen'],File[$config_file]],
+      notify => Service['mongodb'];
+    'mongodb::end':
+      require => [Package['mongodb-10gen'],File[$config_file],Service['mongodb']];
+  }
 }
