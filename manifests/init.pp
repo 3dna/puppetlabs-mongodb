@@ -35,6 +35,7 @@ class mongodb (
   $location        = '',
   $packagename     = undef,
   $servicename     = $mongodb::params::service,
+  $service_ensure  = running,
   $logpath         = '/var/log/mongo/mongod.log',
   $config_file     = '/etc/mongod.conf',
   $logappend       = true,
@@ -93,7 +94,7 @@ class mongodb (
 
   service { 'mongodb':
     name      => $servicename,
-    ensure    => running,
+    ensure    => $service_ensure,
     enable    => true,
     subscribe => File[$config_file],
   }
