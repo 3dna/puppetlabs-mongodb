@@ -203,7 +203,8 @@ class mongodb::server::config {
       mode    => '0644',
     }
 
-    file { $dbpath:
+    file { "${dbpath}_present":
+      path    => $dbpath,
       ensure  => directory,
       mode    => '0755',
       owner   => $user,
@@ -220,7 +221,8 @@ class mongodb::server::config {
       }
     }
   } else {
-    file { $dbpath:
+    file { "${dbpath}_absent":
+      path    => $dbpath,
       ensure => absent,
       force  => true,
       backup => false,
