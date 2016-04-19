@@ -203,15 +203,6 @@ class mongodb::server::config {
       mode    => '0644',
     }
 
-    file { "${dbpath}_present":
-      path    => $dbpath,
-      ensure  => directory,
-      mode    => '0755',
-      owner   => $user,
-      group   => $group,
-      require => File[$config]
-    }
-
     if $pidfilepath {
       file { $pidfilepath:
         ensure => file,
@@ -221,12 +212,6 @@ class mongodb::server::config {
       }
     }
   } else {
-    file { "${dbpath}_absent":
-      path    => $dbpath,
-      ensure => absent,
-      force  => true,
-      backup => false,
-    }
     file { $config:
       ensure => absent
     }
