@@ -43,8 +43,8 @@ class mongodb::repo (
       elsif $version and (versioncmp($version, '3.0.0') >= 0) {
         $mongover = split($version, '[.]')
         $location = $::operatingsystem ? {
-          'Debian' => 'https://repo.mongodb.org/apt/debian',
-          'Ubuntu' => 'https://repo.mongodb.org/apt/ubuntu',
+          'Debian' => 'http://repo.mongodb.org/apt/debian',
+          'Ubuntu' => 'http://repo.mongodb.org/apt/ubuntu',
           default  => undef
         }
         # Temp hack. Need to follow https://jira.mongodb.org/browse/SERVER-18329
@@ -58,7 +58,11 @@ class mongodb::repo (
           'Ubuntu' => 'multiverse',
           default => undef
         }
-        $key         = '492EAFE8CD016A07919F1D2B9ECBEC467F0CEB10'
+        if versioncmp($version, '3.2.0') >= 0 {
+          $key         = '42F3E95A2C4F08279C4960ADD68FA50FEA312927'
+        } else {
+          $key         = '492EAFE8CD016A07919F1D2B9ECBEC467F0CEB10'
+        }
         $key_server  = 'hkp://keyserver.ubuntu.com:80'
       } else {
         $location = $::operatingsystem ? {
