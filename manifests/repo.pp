@@ -43,8 +43,8 @@ class mongodb::repo (
       elsif $version and (versioncmp($version, '3.0.0') >= 0) {
         $mongover = split($version, '[.]')
         $location = $::operatingsystem ? {
-          'Debian' => 'http://repo.mongodb.org/apt/debian',
-          'Ubuntu' => 'http://repo.mongodb.org/apt/ubuntu',
+          'Debian' => 'https://repo.mongodb.org/apt/debian',
+          'Ubuntu' => 'https://repo.mongodb.org/apt/ubuntu',
           default  => undef
         }
         # Temp hack. Need to follow https://jira.mongodb.org/browse/SERVER-18329
