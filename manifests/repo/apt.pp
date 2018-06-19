@@ -10,9 +10,13 @@ class mongodb::repo::apt inherits mongodb::repo {
       location    => $::mongodb::repo::location,
       release     => $::mongodb::repo::release,
       repos       => $::mongodb::repo::repos,
-      key         => $::mongodb::repo::key,
-      key_server  => $::mongodb::repo::key_server,
-      include_src => false,
+      key         => {
+        'id'        => $::mongodb::repo::key,
+        'server'    => $::mongodb::repo::key_server,
+      },
+      include     => {
+        'src'       => false,
+      },
     }
 
     Apt::Source['mongodb']->Package<|tag == 'mongodb'|>
