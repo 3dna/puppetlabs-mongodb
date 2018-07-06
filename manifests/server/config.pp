@@ -7,6 +7,7 @@ class mongodb::server::config {
   $config_content   = $mongodb::server::config_content
   $config_template  = $mongodb::server::config_template
   $config_data      = $mongodb::server::config_data
+  $manage_dbpath    = $mongodb::server::manage_dbpath
   $dbpath           = $mongodb::server::dbpath
   $dbpath_fix       = $mongodb::server::dbpath_fix
   $pidfilepath      = $mongodb::server::pidfilepath
@@ -127,24 +128,26 @@ class mongodb::server::config {
       mode    => '0644',
     }
 
-    file { $dbpath:
-      ensure   => directory,
-      mode     => '0755',
-      owner    => $user,
-      group    => $group,
-      selrange => 's0',
-      selrole  => 'object_r',
-      seltype  => 'mongod_var_lib_t',
-      seluser  => 'system_u',
-      require  => File[$config],
-    }
+    if $manage_dbpath {
+      file { $dbpath:
+        ensure   => directory,
+        mode     => '0755',
+        owner    => $user,
+        group    => $group,
+        selrange => 's0',
+        selrole  => 'object_r',
+        seltype  => 'mongod_var_lib_t',
+        seluser  => 'system_u',
+        require  => File[$config],
+      }
 
-    if $dbpath_fix {
-      exec { 'fix dbpath permissions':
-        command   => "chown -R ${user}:${group} ${dbpath}",
-        path      => ['/usr/bin', '/bin'],
-        onlyif    => "find ${dbpath} -not -user ${user} -o -not -group ${group} -print -quit | grep -q '.*'",
-        subscribe => File[$dbpath],
+      if $dbpath_fix {
+        exec { 'fix dbpath permissions':
+          command   => "chown -R ${user}:${group} ${dbpath}",
+          path      => ['/usr/bin', '/bin'],
+          onlyif    => "find ${dbpath} -not -user ${user} -o -not -group ${group} -print -quit | grep -q '.*'",
+          subscribe => File[$dbpath],
+        }
       }
     }
 

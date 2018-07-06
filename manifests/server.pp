@@ -4,6 +4,7 @@ class mongodb::server (
   String $user                                          = $mongodb::params::user,
   String $group                                         = $mongodb::params::group,
   Stdlib::Absolutepath $config                          = $mongodb::params::config,
+  Boolean $manage_dbpath                                = $mongodb::params::manage_dbpath
   Stdlib::Absolutepath $dbpath                          = $mongodb::params::dbpath,
   Boolean $dbpath_fix                                   = $mongodb::params::dbpath_fix,
   Optional[Stdlib::Absolutepath] $pidfilepath           = $mongodb::params::pidfilepath,
